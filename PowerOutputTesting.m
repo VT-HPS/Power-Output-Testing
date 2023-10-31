@@ -53,7 +53,7 @@ power = torque .* ((pi/30) .* RPM);
 
 %plots
 figure;
-tiledlayout(2,2)
+tiledlayout(1,4)
 
 % Plot Activations
 nexttile
