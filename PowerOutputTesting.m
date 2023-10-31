@@ -24,7 +24,7 @@ ylabel("Amplitude");
 
 dataIndex = 1;
 tObj = tic;     
-while(toc(tObj) <= duration)
+while toc(tObj) <= duration
     D9 = readDigitalPin(arduinoObj, "D9");
     currentTime = toc(tObj);
 
@@ -53,7 +53,7 @@ power = torque .* ((pi/30) .* RPM);
 
 %plots
 figure;
-tiledlayout(1,4)
+tiledlayout(4,1)
 
 % Plot Activations
 nexttile
