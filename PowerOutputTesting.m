@@ -1,15 +1,15 @@
 % PowerOutputTesting.m
-arduinoObj = arduino("COM3", "Uno", Libraries = ["I2C","Servo","SPI"]);
+arduinoObj = arduino("COM3", "Uno");
 configurePin(arduinoObj, "D9", "DigitalInput");
 
 % Duration to record data(in seconds).
-duration = 10;
+duration = 10; %temp
 % Time interval between consecutive data reads.
-stepTime = 0.1;
+stepTime = 0.1; %temp
 % Total number of data samples to be recorded.
 samples = duration/stepTime;
 
-MOI = 2; % moment of inertia
+MOI = 2; % sample moment of inertia
 
 % Initialize arrays for storing data and timestamps.
 Activations = zeros(1,samples);
@@ -44,10 +44,10 @@ end
 clear arduinoObj D9 dataIndex currentTime
 
 % Calculate Quantities
-revTimes = timeValues(logical([0 (diff(Activations) == 1)]));​
-RPM = 60 ./ diff(revTimes);
+revTimes = timeValues(gradient(Activations) == 1);​
+RPM = 60 ./ gradient(revTimes);
 rps = (pi/30) .* RPM;  % radians per second
-rps2 = gradient(rps, revTimes(2:end));  % radians per second squared​​
+rps2 = gradient(rps, revTimes);  % radians per second squared​​
 torque = MOI .* rps2;​
 power = torque .* ((pi/30) .* RPM);
 
@@ -64,21 +64,21 @@ ylabel("Amplititude");
 
 % Plot RPM
 nexttile
-plot(revTimes(2:end), RPM);
+plot(revTimes, RPM);
 title("RPM");
 xlabel("Time (s)");
 ylabel("RPM");
 
 % Plot Torque
 nexttile
-plot(revTimes(2:end), torque);
+plot(revTimes, torque);
 title("Torque");
 xlabel("Time (s)");
 ylabel("Torque");
 
 % Plot Power
 nexttile
-plot(revTimes(2:end), power);
+plot(revTimes, power);
 title("Power");
 xlabel("Time (s)");
 ylabel("Power");
