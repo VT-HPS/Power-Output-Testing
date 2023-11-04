@@ -24,7 +24,7 @@ ylabel("Amplitude");
 
 dataIndex = 1;
 tObj = tic;     
-while toc(tObj) <= duration
+while toc(tObj) <= duration 
     D9 = readDigitalPin(arduinoObj, "D9");
     currentTime = toc(tObj);
 
@@ -44,11 +44,11 @@ end
 clear arduinoObj D9 dataIndex currentTime
 
 % Calculate Quantities
-revTimes = timeValues(gradient(Activations) == 1);​
+revTimes = timeValues(gradient(Activations) == 1);​​
 RPM = 60 ./ gradient(revTimes);
-rps = (pi/30) .* RPM;  % radians per second
-rps2 = gradient(rps, revTimes);  % radians per second squared​​
-torque = MOI .* rps2;​
+omega = (pi/30) .* RPM;  % radians per second
+alpha = gradient(omega, revTimes);  % radians per second squared​​
+torque = MOI .* alpha;​
 power = torque .* ((pi/30) .* RPM);
 
 %plots
