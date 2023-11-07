@@ -3,6 +3,8 @@ Code for pilot power output testing and thrust determination
 
 To set up do the following:
 - clone the repo
+- open MATLAB
+- plugin arduino (uno) into your machine 
 - connect arduino on COM3, reading Digital Pin 9
 - configure `duration` and `timeStep` in `PowerOutputTesting.m` (add about 5 seconds extra to duration for safety)
 - ensure trainer, magnets and reed switch are setup correctly
