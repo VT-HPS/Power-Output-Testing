@@ -42,13 +42,13 @@ while toc(tObj) <= duration
     pause(stepTime);
 end
 clear arduinoObj D9 dataIndex currentTime
-
+%
 % Calculate Quantities
-revTimes = timeValues(gradient(Activations) == 1);​​
+revTimes = timeValues(gradient(Activations) == 1);
 RPM = 60 ./ gradient(revTimes);
 omega = (pi/30) .* RPM;  % radians per second
 alpha = gradient(omega, revTimes);  % radians per second squared​​
-torque = MOI .* alpha;​
+torque = MOI .* alpha;
 power = torque .* ((pi/30) .* RPM);
 
 %plots
