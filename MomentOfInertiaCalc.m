@@ -2,6 +2,9 @@
 % generate omega & alpha from calculations from PowerOutputTesting.m
 % use this to output moment of inertia (avg of them all)
 
+% kemper - max power = 428, mean = 238
+
+
 % clc;
 % clear;
 load PowerOutputTesting.mat revTimes omega alpha

@@ -1,11 +1,11 @@
-% PowerOutputTesting.m
+PowerOutputTesting.m
 arduinoObj = arduino("COM3", "Uno");
 configurePin(arduinoObj, "D9", "DigitalInput");
 
 % Duration to record data(in seconds).
-duration = 10; %temp
+duration = 20; %temp
 % Time interval between consecutive data reads.
-stepTime = 0.1; %temp
+stepTime = 0.01; %temp
 % Total number of data samples to be recorded.
 samples = duration/stepTime;
 
@@ -32,53 +32,60 @@ while toc(tObj) <= duration
     timeValues(dataIndex) = currentTime;
     Activations(dataIndex) = D9;
 
-    % update plot
+    % % update plot
     addpoints(h,currentTime, D9);
     xlim([0, currentTime]);
     drawnow;
 
     % next
     dataIndex = dataIndex + 1;
-    pause(stepTime);
+    %pause(stepTime);
 end
 clear arduinoObj D9 dataIndex currentTime
-%
+
+%% 
+MOI = 84.645e-01;
+revTimes = (readmatrix("./Onland_Testing_Data/path/to/data"))';
+revTimes = revTimes - revTimes(1);
 % Calculate Quantities
-revTimes = timeValues(gradient(Activations) == 1);
-RPM = 60 ./ gradient(revTimes);
+revTimes = timeValues(gradient(Activations) > 0);
+revTimes = timeValues(logical([0 (diff(Activations) == 1)]));
+RPM = 60 ./ diff(revTimes);
 omega = (pi/30) .* RPM;  % radians per second
-alpha = gradient(omega, revTimes);  % radians per second squared​​
+alpha = gradient(omega, revTimes(2:end));  % radians per second squared​​
 torque = MOI .* alpha;
 power = torque .* ((pi/30) .* RPM);
 
+%% 
 %plots
 figure;
-tiledlayout(4,1)
+% tiledlayout(4,1)
+tiledlayout(3,1)
 
 % Plot Activations
-nexttile
-plot(timeValues, Activations);
-title("Activations");
-xlabel("Time (s)");
-ylabel("Amplititude");
+% nexttile
+% plot(timeValues, Activations);
+% title("Activations");
+% xlabel("Time (s)");
+% ylabel("Amplititude");
 
 % Plot RPM
 nexttile
-plot(revTimes, RPM);
+plot(revTimes(2:end), RPM);
 title("RPM");
 xlabel("Time (s)");
 ylabel("RPM");
 
 % Plot Torque
 nexttile
-plot(revTimes, torque);
+plot(revTimes(2:end), torque);
 title("Torque");
 xlabel("Time (s)");
 ylabel("Torque");
 
 % Plot Power
 nexttile
-plot(revTimes, power);
+plot(revTimes(2:end), power);
 title("Power");
 xlabel("Time (s)");
 ylabel("Power");
