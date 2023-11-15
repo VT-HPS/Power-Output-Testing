@@ -83,7 +83,7 @@ fclose(dataFile);
 revTimes = timeValues(logical([0 (diff(Activations) == 1)]));
 RPM = 60 ./ diff(revTimes);
 
-% Plots
+%% Plots
 figure;
 tiledlayout(2, 1)
 
@@ -101,6 +101,7 @@ title("RPM");
 xlabel("Time (s)");
 ylabel("RPM");
 
+%% Functions
 % Function to wait for a specific key press
 function waitForKeyPress(key)
     disp(['Waiting for key press (', key, ')...']);
