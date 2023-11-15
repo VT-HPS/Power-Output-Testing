@@ -63,7 +63,7 @@ while toc <= duration
 
         % Update plot
         addpoints(h, currentTime, data);
-        xlim([0, currentTime]);
+        xlim([currentTime - 10, currentTime]);
         drawnow;
 
         % Write time value to data file if corresponding activation is 1
