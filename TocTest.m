@@ -1,18 +1,15 @@
-% TocTest.m
-arduinoObj = arduino("COM3", "Uno","BaudRate", 115200);
+arduinoObj = arduino("COM3", "Uno","BaudRate", 9600);
 configurePin(arduinoObj, "D8", "DigitalInput");
 
-% Duration to record data(in seconds).
-duration = 60; %temp
-% Time interval between consecutive data reads.
-stepTime = 0.01; %temp
+% Duration to record data (in seconds).
+duration = 30;
 % Total number of data samples to be recorded.
-samples = duration/stepTime;
+samples = duration * 1000; % Adjust the number of samples based on the duration
 
 MOI = 2; % sample moment of inertia
 
 % Initialize arrays for storing data and timestamps.
-Activations = zeros(1,samples);
+Activations = zeros(1, samples);
 timeValues = zeros(1, samples);
 
 % Create a figure for real-time plotting
@@ -24,7 +21,7 @@ ylabel("Amplitude");
 
 dataIndex = 1;
 tic;     
-while toc <= duration 
+while toc <= duration
     D9 = readDigitalPin(arduinoObj, "D8");
 
     currentTime = toc;
@@ -33,12 +30,12 @@ while toc <= duration
     timeValues(dataIndex) = currentTime;
     Activations(dataIndex) = D9;
 
-    % % update plot
-    addpoints(h,currentTime, D9);
+    % Update plot
+    addpoints(h, currentTime, D9);
     xlim([0, currentTime]);
     drawnow;
 
-    % next
+    % Next
     dataIndex = dataIndex + 1;
 end
 toc
@@ -48,16 +45,16 @@ clear arduinoObj D9 dataIndex currentTime tObj
 revTimes = timeValues(logical([0 (diff(Activations) == 1)]));
 RPM = 60 ./ diff(revTimes);
 
-%plots
+% Plots
 figure;
-tiledlayout(2,1)
+tiledlayout(2, 1)
 
 % Plot Activations
 nexttile
 plot(timeValues, Activations);
 title("Activations");
 xlabel("Time (s)");
-ylabel("Amplititude");
+ylabel("Amplitude");
 
 % Plot RPM
 nexttile
