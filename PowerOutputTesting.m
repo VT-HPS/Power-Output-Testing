@@ -1,51 +1,58 @@
-PowerOutputTesting.m
-arduinoObj = arduino("COM3", "Uno");
-configurePin(arduinoObj, "D9", "DigitalInput");
+%% MATLAB Script (e.g., ArduinoDataAnalysis.m)
+% PowerOutputTesting.m
+system('arduino-cli compile --fqbn arduino:avr:uno AquireData.ino');
+system('arduino-cli upload -p COM3 --fqbn arduino:avr:uno AquireData.ino');
 
-% Duration to record data(in seconds).
-duration = 20; %temp
-% Time interval between consecutive data reads.
-stepTime = 0.01; %temp
-% Total number of data samples to be recorded.
-samples = duration/stepTime;
+s = serialport("COM3", 9600);
 
-MOI = 2; % sample moment of inertia
-
-% Initialize arrays for storing data and timestamps.
-Activations = zeros(1,samples);
-timeValues = zeros(1, samples);
+revTimes = [];
+RPMValues = [];
 
 % Create a figure for real-time plotting
-figure;
+figure('KeyPressFcn', @stopRecording);
 h = animatedline;
-title("Activations");
-xlabel("Time (s)");
-ylabel("Amplitude");
+title("Revolution Times");
+xlabel("Data Point");
+ylabel("Revolution Time (s)");
 
 dataIndex = 1;
-tObj = tic;     
-while toc(tObj) <= duration 
-    D9 = readDigitalPin(arduinoObj, "D9");
-    currentTime = toc(tObj);
-
-    % Store the read data in the corresponding data arrays.
-    timeValues(dataIndex) = currentTime;
-    Activations(dataIndex) = D9;
-
-    % % update plot
-    addpoints(h,currentTime, D9);
-    xlim([0, currentTime]);
-    drawnow;
-
-    % next
-    dataIndex = dataIndex + 1;
-    %pause(stepTime);
+while true
+    % Read one line from the serial port
+    data = readline(s);
+    
+    % Break the loop if the received data is empty
+    if isempty(data)
+        break;
+    end
+    
+    % Convert the string to a number and add it to the array
+    revTime = str2double(data);
+    if ~isnan(revTime)
+        revTimes = [revTimes, revTime];
+        
+        % Add data point to the animated plot
+        addpoints(h, revTime, 1);
+        drawnow limitrate;
+        xlim([1, dataIndex + 10]); % Adjust the x-axis limits
+        
+        % Calculate and display RPM
+        if dataIndex > 1
+            RPM = 60 / (revTime - revTimes(end - 1));
+            RPMValues = [RPMValues, RPM];
+            disp(['Current RPM: ', num2str(RPM)]);
+        end
+        
+        % Increment data index
+        dataIndex = dataIndex + 1;
+    end
 end
-clear arduinoObj D9 dataIndex currentTime
 
-%% 
+% Close the serial port
+delete(s);
+clear s;
+
+%% Calculations
 MOI = 84.645e-01;
-revTimes = (readmatrix("./Onland_Testing_Data/path/to/data"))';
 revTimes = revTimes - revTimes(1);
 % Calculate Quantities
 revTimes = timeValues(gradient(Activations) > 0);
@@ -56,8 +63,7 @@ alpha = gradient(omega, revTimes(2:end));  % radians per second squared​​
 torque = MOI .* alpha;
 power = torque .* ((pi/30) .* RPM);
 
-%% 
-%plots
+%% Plots
 figure;
 % tiledlayout(4,1)
 tiledlayout(3,1)
@@ -89,3 +95,16 @@ plot(revTimes(2:end), power);
 title("Power");
 xlabel("Time (s)");
 ylabel("Power");
+
+%% Functions
+
+% Callback function to stop recording when spacebar is pressed
+function stopRecording(~, event)
+    if strcmp(event.Key, 'space')
+        disp('Recording stopped.');
+        % Close the serial port
+        delete(s);
+        clear s;
+        % break; % This will break out of the loop
+    end
+end
