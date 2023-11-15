@@ -12,7 +12,8 @@ To set up using serial port do the following:
 - Open `SerialPortCode.m` in MATLAB
 - Configure `duration` in `SerialPortCode.m` to be about 2 minutes depending on test (add 5 seconds extra for safety)
 - Once `SerialPortCode.m` is started enter the data file name (initals_#.txt) and then once the pilot is read press the space bar to start recording data
-
+  
+<!-- 
 To set up do the following:
 - clone the repo
 - open MATLAB
@@ -20,6 +21,7 @@ To set up do the following:
 - connect arduino on COM3, reading Digital Pin 8
 - configure `duration` and `timeStep` in `PowerOutputTesting.m` (add about 5 seconds extra to duration for safety)
 - ensure trainer, magnets and reed switch are setup correctly
+ -->
 
 Find the moment of interia of the test rig:
   1. start the trainer
