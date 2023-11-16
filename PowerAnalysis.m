@@ -26,15 +26,17 @@ tiledlayout(5,1)
 nexttile
 plot(times,pwrdata.power)
 title("power")
+ylabel("Watts");
 
 nexttile
 plot(times,omega)
 title("omega")
+ylabel("rad/s");
 
 nexttile
 plot(times,alpha)
 title("alpha")
-
+ylabel("rps");
 nexttile
 plot(times,torque)
 title("torque")
@@ -46,10 +48,10 @@ title("MOI")
 % [~,Idx] = max(MOI);
 % 
 % moi = pwrdata.power(Idx) / (omega(Idx) * alpha(Idx));
-moi = 68.9662;
+moi = 14.4411;
 
 %% Derived Values
-revTimes = readmatrix("Onland_Testing_Data\MD\MD_1.txt");
+revTimes = readmatrix("Onland_Testing_Data\KB\KB_1.txt");
 revTimes = revTimes(6:end);
 revTimes = revTimes - revTimes(1);
 rpm = 60 ./ diff(revTimes);
@@ -98,4 +100,13 @@ xlabel("Time (s)");
 ylabel("Torque");
 
 
+%%
+MOI = pwrdata.power ./ (omega .* alpha);
+figure;
+plot(times,MOI);
 
+%%
+
+k = pwrdata.power(1:118) ./ (P');
+k(isinf(k)) = 0;
+convFactor = mean(abs(k));
