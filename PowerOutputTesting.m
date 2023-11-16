@@ -1,7 +1,7 @@
 %% MATLAB Script (e.g., ArduinoDataAnalysis.m)
 % PowerOutputTesting.m
-system('arduino-cli compile --fqbn arduino:avr:uno AquireData.ino');
-system('arduino-cli upload -p COM3 --fqbn arduino:avr:uno AquireData.ino');
+system('arduino-cli compile --fqbn arduino:avr:uno Arduino_Power_Code.ino');
+system('arduino-cli upload -p COM3 --fqbn arduino:avr:uno Arduino_Power_Code.ino');
 
 s = serialport("COM3", 9600);
 
