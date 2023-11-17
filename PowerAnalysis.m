@@ -1,24 +1,20 @@
 % powerAnalysis.m
-radius = 0.3175; % m/s
-pwrdata = readtable("2023-11-13-201932-WAHOOAPPIOS2292-4-0 (4)-record.csv",VariableNamingRule="modify");
+radius = 0.3175; % radius of wheel
+pwrdata = readtable("2023-11-13-201932-WAHOOAPPIOS2292-4-0 (4)-record.csv",VariableNamingRule="modify"); %data from trainer
 
 % P = torque * v/r 
 pwrdata.power(isnan(pwrdata.power)) = 0;
 pwrdata.enhancedSpeed(isnan(pwrdata.enhancedSpeed)) = 0;
 
 omega = pwrdata.enhancedSpeed ./ radius;
-
 alpha = gradient(omega);
-
 MOI = pwrdata.power ./ (omega .* alpha);
-
 torque = pwrdata.power ./ omega;
-
 MOI(isnan(MOI) | isinf(MOI)) = 0;
 torque(isnan(torque) | isnan(torque)) = 0;
 
 pwrtimedata = datetime(extractBefore(convertCharsToStrings(pwrdata.timestamp),".000Z"));
-times = 0:1:seconds(pwrtimedata(end) - pwrtimedata(1));
+times = (0:1:seconds(pwrtimedata(end) - pwrtimedata(1)))';
 
 % figure;
 figure('Name',"Measured Values")
@@ -52,27 +48,24 @@ title("torque")
 moi = 7.33333333333;
 
 %% Derived Values
-revTimes = readmatrix("Onland_Testing_Data\KB\KB_1.txt");
+revTimes = readmatrix("Onland_Testing_Data\NQ\NQ_1.txt");
 % revTimes = revTimes(4:end);
 revTimes = revTimes - revTimes(1);
 
 rpm = 60 ./ gradient(revTimes);
-w = ((pi/30) .* rpm) .* 1.1;  % radians per second
+w = ((pi/30) .* rpm);  % radians per second
     
 % Spline Interpolation
-xq = linspace(revTimes(1),revTimes(end),numel(revTimes));
-
-
+% xq = linspace(revTimes(1),revTimes(end),numel(revTimes));
+xq = revTimes(1):1:revTimes(end);
 % ww = interp1(revTimes,w,xq,"spline");
-
 ww = fit(revTimes,w,'smoothingspline','Normalize','on'); 
-
 W = feval(ww,xq);
 
 a = gradient(W);  % radians per second squared​​
 t = moi .* a;
 P = t .* W;
-P = abs(P) + abs(min(P));
+% P = abs(P) + abs(min(P));
 
 figure('Name',"Derived Values");
 tiledlayout(4,1)
