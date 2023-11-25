@@ -8,7 +8,7 @@ pwrdata.power(isnan(pwrdata.power)) = 0;
 pwrdata.enhancedSpeed(isnan(pwrdata.enhancedSpeed)) = 0;
 power = pwrdata.power;
 
-% Compute omega, alpha, and torque (filter NaN and Inffor torque)
+% Compute omega, alpha, and torque (filter NaN and Inf for torque)
 omega = pwrdata.enhancedSpeed ./ radius;
 alpha = gradient(omega);
 torque = pwrdata.power ./ omega;
@@ -21,28 +21,28 @@ times = (0:1:seconds(pwrtimedata(end) - pwrtimedata(1)))';
 %% Create Figure of Raw Data
 % Set up tiled graph
 figure('Name',"Measured Values");
-dV = tiledlayout(4,1);
-title(dV,'Measured Values');
-xlabel(dV, "Time (s)");
+mV = tiledlayout(4,1);
+title(mV,'Measured Values');
+xlabel(mV, "Time (s)");
 
 nexttile
 plot(times,pwrdata.power);
-title("power");
+title("Trainer Power");
 ylabel("Watts");
 
 nexttile
 plot(times,omega);
-title("omega");
+title("Angular Velocity");
 ylabel("rad/s");
 
 nexttile
 plot(times, alpha);
-title("alpha");
-ylabel("rad/s^2");
+title("Alpha");
+ylabel("\omega rad/s^2");
 
 nexttile
 plot(times,torque);
-title("torque");
+title("Torque (calculated from above)");
 ylabel("N - m");
 
 %% MOI Derived Values
@@ -53,18 +53,18 @@ ylabel("N - m");
 
 moi = 7.33333333333;
 revTimes = OnlandTestingData.KB{1};
-[w, t, P, xq] = deriveValues(revTimes, moi);
+% [w, t, P, xq] = deriveValues(revTimes, moi); %under construction
 
 figure('Name',"MOI Derived Values");
 dV = tiledlayout(3,1);
 title(dV,'Derived Values')
+xlabel(dV, 'Times (s)')
 
 % Plot Power
 nexttile
 plot(xq, P);
 title("Power");
-xlabel("Time (s)");
-ylabel("Power");
+ylabel("Power (Watts)");
 
 % Plot w
 nexttile
@@ -72,7 +72,6 @@ nexttile
 % plot(ww,xq);
 plot(xq,w)
 title("\omega");
-xlabel("Time (s)");
 ylabel("rpm");
 
 
@@ -80,7 +79,6 @@ ylabel("rpm");
 nexttile
 plot(xq, t);
 title("Torque");
-xlabel("Time (s)");
 ylabel("Torque");
 
 %% Linear Fit Derived Values
@@ -89,13 +87,13 @@ ylabel("Torque");
 % compare derived versus reference values
 
 % Create a linear fit starting from data peak    
-si = 6;
-mdl = fitlm(alpha(si:end), torque(si:end));
+si = 1;
+mdl = fitlm(alpha(si:end), torque(si:end)); % **requires Stats & ML toolbox
 linearFit = mdl.Coefficients.Estimate;
 
 % Map alpha to derivedTorque
-a = linearFit(2)
-b = linearFit(1)
+a = linearFit(2);
+b = linearFit(1);
 derivedTorque = a .* alpha + b;
 
 % Create new tiled plot

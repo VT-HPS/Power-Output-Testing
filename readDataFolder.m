@@ -18,9 +18,6 @@ function dataStruct = readDataFolder(folderPath)
 %       subfolderData = dataStruct.SubfolderName;
 %       % Access data from the first file in the subfolder
 %       firstFileData = subfolderData{1};
-%
-%   Author: Your Name
-%   Date: November 20, 2023
 
     % Get a list of subfolders in the main folder
     subfolders = dir(folderPath);

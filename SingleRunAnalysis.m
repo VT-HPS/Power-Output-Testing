@@ -6,7 +6,7 @@
 
 %% Load in Data and Graph Angular Velocity
 load OnlandTestingData.mat
-figure('Name', "RPM Data from Specified Dataset");
+
 
 % Change these numbers to choose a person and their data
 personNum = 1;
@@ -21,6 +21,7 @@ rpm(isnan(rpm) | isinf(rpm)) = 0;
 omega = rpm .* (pi/30);
 
 % Plot the omega data
+figure('Name', "RPM Data from " + dataName);
 plot(times, omega);
 xlabel("Time (s)");
 ylabel("Angular Velocity (rad/s)");
@@ -63,8 +64,8 @@ processedAlpha = sgolayfilt(alpha, 3, 11);
 % Using a simple linear fit
 moi = 6.22237374355685;
 torqueFriction = 7.03166504279402;
-torque = moi.*alpha + torqueFriction;
-
+% torque = moi.*alpha + torqueFriction;
+torque = moi.*processedAlpha + torqueFriction;
 % Stage 3 Processing
 % -------------------------------------------------------------------------
 processedTorque = sgolayfilt(torque, 3, 11);
