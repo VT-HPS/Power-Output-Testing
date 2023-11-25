@@ -16,8 +16,8 @@ legendEntries = {};
 dataTimes = table();
 % Loop through each field in the struct
 fields = fieldnames(data);
-for i = 1:3
-% for i = 1:numel(fields)
+% for i = 1:3
+for i = 1:numel(fields)
     currentField = data.(fields{i});
 
     % Loop through each element in the cell array and plot the data
@@ -26,7 +26,7 @@ for i = 1:3
         revTimes = currentField{j};
         % k = sprintf('%s_%d', fields{i}, j);
         
-        [rpm, torque, power, times] = deriveValues(revTimes, moi);
+        %[rpm, torque, power, times] = deriveValues(revTimes, moi); % under construction
         % dataTimes.(k) = cell(times);
         % Plot rpm
         nexttile(1);
@@ -65,7 +65,7 @@ legend(legendEntries);
 
 %% Inspect input/output
 
-% Here we flatten
+% Here we flatten the struct to an array
 q = struct2table(OnlandTestingData);
 w = table2array(q);
 % Find the maximum number of rows in the cell array

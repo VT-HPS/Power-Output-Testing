@@ -1,5 +1,4 @@
-%% MATLAB Script (e.g., ArduinoDataAnalysis.m)
-% PowerOutputTesting.m
+%% Power Output Testing
 system('arduino-cli compile --fqbn arduino:avr:uno Arduino_Power_Code.ino');
 system('arduino-cli upload -p COM3 --fqbn arduino:avr:uno Arduino_Power_Code.ino');
 

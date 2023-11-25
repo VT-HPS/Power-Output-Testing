@@ -12,6 +12,8 @@ To set up using serial port do the following:
 - Open `SerialPortCode.m` in MATLAB
 - Configure `duration` in `SerialPortCode.m` to be about 2 minutes depending on test (add 5 seconds extra for safety)
 - Once `SerialPortCode.m` is started enter the data file name (initals_#.txt) and then once the pilot is read press the space bar to start recording data
+
+Run the test by starting the code *before* starting to pedal. 
   
 <!-- 
 To set up do the following:
@@ -28,8 +30,8 @@ Find the moment of interia of the test rig:
   2. start recording data in MATLAB (i.e. hit start)
   3. start pedaling
   4. monitor live plot for any erroneous indications
-  5. test will conclude automatically
-  6. **save the workspace variables** from `PowerOutputTesting.m` to `PowerOutputTesting.mat` in the same directory
-  7. run `MomentOFInertiaCalc.m` and plug output value back into `PowerOutpuTesting.m` for `MOI`
+  5. plug data from trainer ('Record' field) .csv into modelTrainerData to get MOI and torqueFriction
+
+**Data from Onland Testing is availble in the struct in OnlandAnalysisData.mat
  
-Then run the underwater test by starting the code *before* starting to pedal. 
+

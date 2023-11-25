@@ -1,23 +1,23 @@
 function dataStruct = readDataFolder(folderPath)
-% READDATAFOLDER - Read data from text files in subfolders of the main folder.
-%   dataStruct = READDATAFOLDER(folderPath) reads data from text files in subfolders
-%   of the specified main folder and organizes it into a struct. Each field of the struct
-%   corresponds to a subfolder, and the value is a cell array containing data from each
-%   text file in that subfolder.
-%
-%   Inputs:
-%       folderPath - Path to the main folder containing subfolders with text files.
-%
-%   Output:
-%       dataStruct - Struct containing organized data from text files.
-%
-%   Example:
-%       % Read data from a folder and access data from a specific subfolder
-%       folderPath = 'C:\Your\Main\Folder';
-%       dataStruct = readDataFolder(folderPath);
-%       subfolderData = dataStruct.SubfolderName;
-%       % Access data from the first file in the subfolder
-%       firstFileData = subfolderData{1};
+    % READDATAFOLDER - Read data from text files in subfolders of the main folder.
+    %   dataStruct = READDATAFOLDER(folderPath) reads data from text files in subfolders
+    %   of the specified main folder and organizes it into a struct. Each field of the struct
+    %   corresponds to a subfolder, and the value is a cell array containing data from each
+    %   text file in that subfolder.
+    %
+    %   Inputs:
+    %       folderPath - Path to the main folder containing subfolders with text files.
+    %
+    %   Output:
+    %       dataStruct - Struct containing organized data from text files.
+    %
+    %   Example:
+    %       % Read data from a folder and access data from a specific subfolder
+    %       folderPath = 'C:\Your\Main\Folder';
+    %       dataStruct = readDataFolder(folderPath);
+    %       subfolderData = dataStruct.SubfolderName;
+    %       % Access data from the first file in the subfolder
+    %       firstFileData = subfolderData{1};
 
     % Get a list of subfolders in the main folder
     subfolders = dir(folderPath);
