@@ -7,7 +7,7 @@
 %% Load in Data and Graph Angular Velocity
 load OnlandTestingData.mat
 
-
+OnlandTestingData = OnlandTesting.arduinoData;
 % Change these numbers to choose a person and their data
 personNum = 1;
 trialNum = 1;

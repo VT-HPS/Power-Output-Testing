@@ -7,17 +7,21 @@ function [rpm, torque, power, moi, torqueFriction, times] = modelTrainerData(tra
     %   prediction in rotational systems.
     %
     %   Inputs:
-    %       trainerData - File path to the trainer data in CSV format.
+    %       trainerData - File path to the trainer data in CSV format, or
+    %       table with data 
     %       radius - Radius of the rotating system.
     %       si - (optional) Start index for the linear fit, 
     %   pick to avoid erroneous start data (default = 1).
     %
     %   Outputs:
-    %       rpm - Rotations per minute (derived from the enhanced speed data).
+    %       rpm - Rotations per minute (derived from the enhanced speed
+    %       data).
     %       torque - Torque calculated from power and angular velocity.
     %       power - Power data from the trainer.
-    %       moi - Moment of inertia (derived from linear fit of torque vs. angular acceleration).
-    %       torqueFriction - Friction torque (derived from linear fit of torque vs. angular acceleration).
+    %       moi - Moment of inertia (derived from linear fit of torque vs.
+    %       angular acceleration).
+    %       torqueFriction - Friction torque (derived from linear fit of 
+    %       torque vs. angular acceleration).
     %       times - Time vector corresponding to the trainer data.
     %
     %   Example:
@@ -35,8 +39,12 @@ function [rpm, torque, power, moi, torqueFriction, times] = modelTrainerData(tra
     if nargin < 3
         si = 1;
     end
-
-    data = readtable(trainerData);
+   
+    if ~isa(trainerData,'table')
+        data = readtable(trainerData);
+    else
+        data = trainerData;
+    end
 
     % Filter NaN values for power and speed
     data.power(isnan(data.power)) = 0;

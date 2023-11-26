@@ -26,12 +26,8 @@ To set up do the following:
  -->
 
 Find the moment of interia of the test rig:
-  1. start the trainer
-  2. start recording data in MATLAB (i.e. hit start)
-  3. start pedaling
-  4. monitor live plot for any erroneous indications
-  5. plug data from trainer ('Record' field) .csv into modelTrainerData to get MOI and torqueFriction
+- set up using the serial port
+- monitor live plot for any erroneous indications
+- plug data from trainer ('Record' field) .csv into `modelTrainerData.m` to get MOI and torqueFriction
 
-**Data from Onland Testing is availble in the struct in OnlandAnalysisData.mat
- 
-
+**Data from Onland Testing is available in the struct in OnlandAnalysisData.mat**
