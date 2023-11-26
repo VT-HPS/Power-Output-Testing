@@ -45,7 +45,6 @@ function dataStruct = readDataFolder(folderPath, fileExtension)
             if strcmpi(fileExtension, '.csv')
                 fileData = readtable(filePath);
             else
-                % Add more conditions for other file types if needed
                 fileData = readmatrix(filePath);
             end
 

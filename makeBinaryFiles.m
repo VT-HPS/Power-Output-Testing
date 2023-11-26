@@ -1,12 +1,11 @@
 %% makeBinaryFiles
+oldpath = path;
+path(oldpath,'.\Functions')
 
 arduinoData = readDataFolder('Onland_Testing_Data', '.txt');
-
 trainerData = readDataFolder('Trainer_Onland_Testing_Data', '.csv');
 
 %% Calculate MOI and TORQFRICT
-
-data = trainerData;
 
 MOI = [];
 TORQFRICT = [];
@@ -15,13 +14,13 @@ radius = 0.3175; % radius of wheel
 
 fields = fieldnames(trainerData);
 for i = 1:numel(fields)
-    currentField = data.(fields{i});
+    currentField = trainerData.(fields{i});
     for j = 1:numel(currentField)
         dataName = sprintf('%s_%d', fields{i}, j);
-        trainerData = data.(fields{i});
+        data = trainerData.(fields{i});
         
         % Calculate MOI and TORQFRIC
-        [~, ~, ~, moi, torqueFriction, ~] = modelTrainerData(trainerData{j}, radius);
+        [~, ~, ~, moi, torqueFriction, ~] = modelTrainerData(data{j}, radius);
         
         MOI = [MOI; moi];
         TORQFRICT = [TORQFRICT; torqueFriction];
@@ -33,5 +32,10 @@ end
 trainerConsts = table(MOI, TORQFRICT, 'RowNames', dataNames, 'VariableNames', {'MOI', 'TORQFRIC'});
 
 %% Save Binary
-OnlandTesting = struct('arduinoData',arduinoData,'trainerData',trainerData,'trainerConsts',trainerConsts);
+OnlandTesting = struct();
+OnlandTesting.arduinoData = arduinoData;
+OnlandTesting.trainerData = trainerData;
+OnlandTesting.trainerConsts = trainerConsts;
 save('OnlandTestingData.mat',"OnlandTesting");
+
+path(oldpath);

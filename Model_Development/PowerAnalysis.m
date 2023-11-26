@@ -1,7 +1,7 @@
 %% Load Data and Setup
-load OnlandTestingData.mat
+load ..\OnlandTestingData.mat
 radius = 0.3175; % radius of wheel
-pwrdata = readtable("2023-11-13-201932-WAHOOAPPIOS2292-4-0 (4)-record.csv",VariableNamingRule="modify"); %data from trainer
+pwrdata = OnlandTesting.trainerData; %data from trainer
 
 % Filter NaN values for power and speed
 pwrdata.power(isnan(pwrdata.power)) = 0;

@@ -4,18 +4,20 @@
 % possibilities in the model outlined in DataModel.png. Change the numbers
 % on lines 12 and 13 to vary the person and their trial number
 
+oldpath = path;
+path(oldpath,'..\Functions')
 %% Load in Data and Graph Angular Velocity
-load OnlandTestingData.mat
+load ..\OnlandTestingData.mat
 
-OnlandTestingData = OnlandTesting.arduinoData;
+data = OnlandTesting.arduinoData;
 % Change these numbers to choose a person and their data
 personNum = 1;
 trialNum = 1;
-fields = fieldnames(OnlandTestingData);
+fields = fieldnames(data);
 dataName = sprintf('%s_%d', fields{personNum}, trialNum);
 
 % Get the raw revolution data and convert to rpm and times, then omega
-revTimes = OnlandTestingData.(fields{personNum}){trialNum};
+revTimes = data.(fields{personNum}){trialNum};
 [rpm, times] = rpmGen(revTimes);
 rpm(isnan(rpm) | isinf(rpm)) = 0;
 omega = rpm .* (pi/30);
@@ -173,3 +175,5 @@ ylabel("Torque (N - m)");
 nexttile(3);
 plot(times, powerFit(times));
 ylabel("Power (W)");
+%% Restore Path
+path(oldpath);

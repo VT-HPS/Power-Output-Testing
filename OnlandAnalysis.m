@@ -6,7 +6,7 @@
 % compare with trainer data
 % get means: power, rpm, and torque
 load OnlandTestingData.mat
-data = OnlandTestingData;
+data = OnlandTesting.arduinoData;
 moi = 7.333;
 figure('Name', "Onland Testing Analysis: Derived Values");
 tiledlayout(3, 1);
