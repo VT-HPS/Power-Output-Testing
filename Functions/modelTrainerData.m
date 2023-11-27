@@ -1,4 +1,4 @@
-function [rpm, torque, power, moi, torqueFriction, times] = modelTrainerData(trainerData, radius, si)
+function [times, rpm, torque, power, moi, torqueFriction] = modelTrainerData(trainerData, radius, si)
     % MODELTRAINERDATA - Train a torque model from trainer data to find MOI
     %   [rpm, torque, power, moi, torqueFriction, times] = MODELTRAINERDATA(trainerData, radius, si)
     %

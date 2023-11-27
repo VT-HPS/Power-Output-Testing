@@ -1,7 +1,8 @@
-%% Load Data and Setup
+%% Power Analysis
+% Load Data and Setup
 load ..\OnlandTestingData.mat
 radius = 0.3175; % radius of wheel
-pwrdata = OnlandTesting.trainerData; %data from trainer
+pwrdata = OnlandTesting.CG(1).trainerData; %data from trainer
 
 % Filter NaN values for power and speed
 pwrdata.power(isnan(pwrdata.power)) = 0;
@@ -116,4 +117,3 @@ xlabel("Time (s)");
 ylabel("Power (Watts)");
 title("Derived vs. Actual Power");
 legend(["Ref Power", "Derived Power"]);
-

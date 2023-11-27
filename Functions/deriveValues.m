@@ -1,7 +1,7 @@
-function [rpm, torque, power, times] = deriveValues(revTimes, moi, torqueFriction)
+function [times, rpm, torque, power] = deriveValues(revTimes, moi, torqueFriction)
     % DERIVEVALUES - Calculate derived parameters (rpm, torque, power) from revolution times.
     %
-    %   [rpm, torque, power, times] = DERIVEVALUES(revTimes, moi, torqueFriction)
+    %   [times, rpm, torque, power] = DERIVEVALUES(revTimes, moi, torqueFriction)
     %
     %   This function processes revolution times data to derive rotational parameters such as
     %   rotations per minute (rpm), torque, and power. It incorporates a developed model from a
@@ -13,16 +13,16 @@ function [rpm, torque, power, times] = deriveValues(revTimes, moi, torqueFrictio
     %       torqueFriction - Friction torque.
     %
     %   Outputs:
+    %       times - Time vector corresponding to the calculated values.
     %       rpm - Rotations per minute.
     %       torque - Torque (calculated based on a developed model).
     %       power - Power (calculated as the product of torque and angular velocity).
-    %       times - Time vector corresponding to the calculated values.
     %
     %   Example:
     %       revTimes = [0, 1, 2, 3, 4];
     %       moi = 2.5;
     %       torqueFriction = 0.1;
-    %       [rpm, torque, power, times] = DERIVEVALUES(revTimes, moi, torqueFriction);
+    %       [times, rpm, torque, power] = DERIVEVALUES(revTimes, moi, torqueFriction);
     %
     %   Notes:
     %       - The function incorporates a developed model for torque calculation.

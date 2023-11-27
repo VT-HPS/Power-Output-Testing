@@ -9,7 +9,7 @@ path(oldpath,'..\Functions')
 %% Load in Data and Graph Angular Velocity
 load ..\OnlandTestingData.mat
 
-data = OnlandTesting.arduinoData;
+data = OnlandTesting;
 % Change these numbers to choose a person and their data
 personNum = 1;
 trialNum = 1;
@@ -17,7 +17,7 @@ fields = fieldnames(data);
 dataName = sprintf('%s_%d', fields{personNum}, trialNum);
 
 % Get the raw revolution data and convert to rpm and times, then omega
-revTimes = data.(fields{personNum}){trialNum};
+revTimes = data.(fields{personNum})(trialNum).arduinoData;
 [rpm, times] = rpmGen(revTimes);
 rpm(isnan(rpm) | isinf(rpm)) = 0;
 omega = rpm .* (pi/30);
