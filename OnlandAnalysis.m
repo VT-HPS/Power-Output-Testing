@@ -5,42 +5,45 @@
 % compare smoothed out data
 % compare with trainer data
 % get means: power, rpm, and torque
+oldpath = path;
+path(oldpath,'.\Functions')
 load OnlandTestingData.mat
-data = OnlandTesting.arduinoData;
-moi = 7.333;
 figure('Name', "Onland Testing Analysis: Derived Values");
-tiledlayout(3, 1);
+fig = tiledlayout(3, 1);
 
 % Initialize legend entries
 legendEntries = {};
 dataTimes = table();
 % Loop through each field in the struct
-fields = fieldnames(data);
+fields = fieldnames(OnlandTesting);
 % for i = 1:3
 for i = 1:numel(fields)
-    currentField = data.(fields{i});
+    currentField = fields{i};
 
     % Loop through each element in the cell array and plot the data
     % for j = 1:3
-    for j = 1:numel(currentField)
-        revTimes = currentField{j};
+    for j = 1:numel(OnlandTesting.(currentField))
+        revTimes = OnlandTesting.(currentField)(j).arduinoData;
+        moi = OnlandTesting.(currentField)(j).MOI;
+        torqueFriction = OnlandTesting.(currentField)(j).TORQFRICT;
         % k = sprintf('%s_%d', fields{i}, j);
+
+        arduinoDataTable = OnlandTesting.(currentField)(j).arduinoResults;
         
-        %[rpm, torque, power, times] = deriveValues(revTimes, moi); % under construction
         % dataTimes.(k) = cell(times);
         % Plot rpm
         nexttile(1);
-        plot(times, rpm);
+        plot(arduinoDataTable.times, arduinoDataTable.rpm);
         hold on;
 
         % Plot Torque
         nexttile(2);
-        plot(times, torque);
+        plot(arduinoDataTable.times, arduinoDataTable.torque);
         hold on;
 
         % Plot Power
         nexttile(3);
-        plot(times, power);
+        plot(arduinoDataTable.times, arduinoDataTable.power);
         hold on;
 
         % Generate legend entries
@@ -51,10 +54,10 @@ end
 % Set titles, labels, and legends for each subplot
 titles = ["$RPM$", "Torque $\tau$", "Power \textit{P}"];
 Ylabels= ["RPM", "N-m", "Watts"];
+xlabel(fig,"Time (s)",'Interpreter', 'latex')
 for k = 1:3
     nexttile(k);
     title(titles(k),'Interpreter', 'latex');
-    xlabel("Time (s)",'Interpreter', 'latex');
     ylabel(Ylabels(k),'Interpreter', 'latex');
     % legend(legendEntries); % too cluttered
     hold off;
@@ -64,20 +67,22 @@ nexttile(1)
 legend(legendEntries);
 
 %% Inspect input/output
-
-% Here we flatten the struct to an array
-q = struct2table(OnlandTestingData);
-w = table2array(q);
-% Find the maximum number of rows in the cell array
-maxRows = max(cellfun(@(x) size(x, 1), w));
-
-% Pad each cell to match the maximum number of rows
-w_padded = cellfun(@(x) [x; nan(maxRows - size(x, 1), size(x, 2))], w, 'UniformOutput', false);
-
-% Convert the padded cell array to a matrix
-d = cell2mat(w_padded);
-
-[rpm, torque, power, times] = deriveValues(d, moi, false); %interpolation does not work with arrays yet
-
-figure
-plot(times,rpm)
+% 
+% % Here we flatten the struct to an array
+% q = struct2table(OnlandTestingData);
+% w = table2array(q);
+% % Find the maximum number of rows in the cell array
+% maxRows = max(cellfun(@(x) size(x, 1), w));
+% 
+% % Pad each cell to match the maximum number of rows
+% w_padded = cellfun(@(x) [x; nan(maxRows - size(x, 1), size(x, 2))], w, 'UniformOutput', false);
+% 
+% % Convert the padded cell array to a matrix
+% d = cell2mat(w_padded);
+% 
+% [rpm, torque, power, times] = deriveValues(d, moi, false); %interpolation does not work with arrays yet
+% 
+% figure
+% plot(times,rpm)
+%% Restore Path
+path(oldpath)

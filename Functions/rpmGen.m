@@ -16,4 +16,7 @@ function [rpm, times] = rpmGen(revTimes)
     % Compute time and rpm vectors
     times = revTimes - revTimes(1);
     rpm = 60 ./ [0; diff(times)];
+
+    % smooth erroneous data
+    % rpm = filloutliers(rpm,"spline","movmedian",[10 20],"ThresholdFactor",8); %not perfect, but helps
 end
