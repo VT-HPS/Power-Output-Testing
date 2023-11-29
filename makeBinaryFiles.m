@@ -31,10 +31,12 @@ for i = 1:numel(fields)
 
         OnlandTesting.(personInitials)(j).MOI = moi;
         OnlandTesting.(personInitials)(j).TORQFRICT = torqueFriction;
+
+        
     end
 end
 
 %% Save Binaries
-save('OnlandTestingData.mat',"OnlandTesting");
+save('OnlandTestingData.mat',"test");
 
 path(oldpath);

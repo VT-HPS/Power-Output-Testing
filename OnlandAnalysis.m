@@ -6,7 +6,7 @@
 % compare with trainer data
 % get means: power, rpm, and torque
 oldpath = path;
-path(oldpath,'.\Functions')
+path(oldpath,'./Functions')
 load OnlandTestingData.mat
 figure('Name', "Onland Testing Analysis: Derived Values");
 fig = tiledlayout(3, 1);
@@ -66,23 +66,29 @@ end
 nexttile(1)
 legend(legendEntries);
 
-%% Inspect input/output
-% 
-% % Here we flatten the struct to an array
-% q = struct2table(OnlandTestingData);
-% w = table2array(q);
-% % Find the maximum number of rows in the cell array
-% maxRows = max(cellfun(@(x) size(x, 1), w));
-% 
-% % Pad each cell to match the maximum number of rows
-% w_padded = cellfun(@(x) [x; nan(maxRows - size(x, 1), size(x, 2))], w, 'UniformOutput', false);
-% 
-% % Convert the padded cell array to a matrix
-% d = cell2mat(w_padded);
-% 
-% [rpm, torque, power, times] = deriveValues(d, moi, false); %interpolation does not work with arrays yet
-% 
-% figure
-% plot(times,rpm)
+%% Peak Power
+
+% Access the struct with precomputed data
+dataStruct = OnlandTesting;
+
+fields = fieldnames(dataStruct);
+peakPowerArray = zeros(6,3);
+avgPowerArray = zeros(6,3);
+
+for m = 1:numel(fields)
+    personInitials = fields{m};
+    
+    for n = 1:numel(dataStruct.(personInitials))
+        % Access power data for the current trial
+        powerData = dataStruct.(personInitials)(n).arduinoResults.power;
+
+        peakPowerArray(m,n) = max(powerData);
+        avgPowerArray(m,n) = mean(powerData);
+    end
+end
+
+peakPowerTable = array2table(peakPowerArray,"RowNames",fields,"VariableNames",["Trial1","Trial2","Trial3"]);
+avgPowerTable = array2table(avgPowerArray,"RowNames",fields,"VariableNames",["Trial1","Trial2","Trial3"]);
+
 %% Restore Path
 path(oldpath)
