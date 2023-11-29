@@ -78,33 +78,34 @@ power = processedTorque .* processedOmega;
 
 %% View Model Result
 figure();
-t = tiledlayout(4, 1);
+set(0,'defaulttextinterpreter','latex')
+t = tiledlayout(3, 1);
 title(t, dataName + " Model Results");
 xlabel(t, "Time (s)");
 
 % Omega Plot
 nexttile(1);
 plot(times, omega, times, processedOmega);
-ylabel("Omega (rad/s)");
+ylabel("rad/s");
 legend(["Raw", "Processed"]);
 title("Omega");
 
-% Alpha Plot
-nexttile(2);
-plot(times, alpha, times, processedAlpha);
-ylabel("Alpha (rad/s^2)");
-legend(["Raw", "Processed"]);
-title("Alpha");
+% % Alpha Plot
+% nexttile(2);
+% plot(times, alpha, times, processedAlpha);
+% ylabel("Alpha (rad/s^2)");
+% legend(["Raw", "Processed"]);
+% title("Alpha");
 
 % Torque Plot
-nexttile(3);
+nexttile(2);
 plot(times, torque, times, processedTorque);
-ylabel("Torque (N - m");
+ylabel("N - m");
 legend(["Raw", "Processed"]);
 title("Torque");
 
 % Power Plot
-nexttile(4);
+nexttile(3);
 plot(times, power);
 ylabel("Power (W)");
 title("Power");

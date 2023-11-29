@@ -8,12 +8,14 @@
 oldpath = path;
 path(oldpath,'./Functions')
 load OnlandTestingData.mat
-figure('Name', "Onland Testing Analysis: Derived Values");
+
+%% Derived Values
+figure('Name', "Onland Testing Results: (Arduino) Derived Values");
 fig = tiledlayout(3, 1);
+title(fig,"Onland Testing Results: (Arduino) Derived Values",'Interpreter', 'latex')
 
 % Initialize legend entries
 legendEntries = {};
-dataTimes = table();
 % Loop through each field in the struct
 fields = fieldnames(OnlandTesting);
 % for i = 1:3
@@ -23,9 +25,6 @@ for i = 1:numel(fields)
     % Loop through each element in the cell array and plot the data
     % for j = 1:3
     for j = 1:numel(OnlandTesting.(currentField))
-        revTimes = OnlandTesting.(currentField)(j).arduinoData;
-        moi = OnlandTesting.(currentField)(j).MOI;
-        torqueFriction = OnlandTesting.(currentField)(j).TORQFRICT;
         % k = sprintf('%s_%d', fields{i}, j);
 
         arduinoDataTable = OnlandTesting.(currentField)(j).arduinoResults;
@@ -54,17 +53,80 @@ end
 % Set titles, labels, and legends for each subplot
 titles = ["$RPM$", "Torque $\tau$", "Power \textit{P}"];
 Ylabels= ["RPM", "N-m", "Watts"];
-xlabel(fig,"Time (s)",'Interpreter', 'latex')
+xlabel(fig,"Time (s)",'Interpreter', 'latex');
+YLIMS = [[0 400]; [0 40]; [0 800]];
 for k = 1:3
-    nexttile(k);
+    g = nexttile(k);
     title(titles(k),'Interpreter', 'latex');
     ylabel(Ylabels(k),'Interpreter', 'latex');
+    ylim(g,YLIMS(k,:));
+    xlim(g,[0 130]);
     % legend(legendEntries); % too cluttered
     hold off;
 end
 
 nexttile(1)
 legend(legendEntries);
+% saveas(fig,"./Figures/Onland Testing Results- (Arduino) Derived Values.png")
+
+%% Trainer Values
+
+figure('Name', "Onland Testing Results: Trainer Values");
+fig = tiledlayout(3, 1);
+title(fig,"Onland Testing Results: Trainer Values",'Interpreter', 'latex')
+
+% Initialize legend entries
+legendEntries = {};
+% Loop through each field in the struct
+fields = fieldnames(OnlandTesting);
+% for i = 1:3
+for i = 1:numel(fields)
+    currentField = fields{i};
+
+    % Loop through each element in the cell array and plot the data
+    % for j = 1:3
+    for j = 1:numel(OnlandTesting.(currentField))
+        trainerDataTable = OnlandTesting.(currentField)(j).trainerResults;
+        
+        % dataTimes.(k) = cell(times);
+        % Plot rpm
+        nexttile(1);
+        plot(trainerDataTable.times, trainerDataTable.rpm);
+        hold on;
+
+        % Plot Torque
+        nexttile(2);
+        plot(trainerDataTable.times, trainerDataTable.torque);
+        hold on;
+
+        % Plot Power
+        nexttile(3);
+        plot(trainerDataTable.times, trainerDataTable.power);
+        hold on;
+
+        % Generate legend entries
+        legendEntries = [legendEntries, sprintf('%s_%d', fields{i}, j)];        
+    end
+end
+
+% Set titles, labels, and legends for each subplot
+titles = ["$RPM$", "Torque $\tau$", "Power \textit{P}"];
+Ylabels= ["RPM", "N-m", "Watts"];
+xlabel(fig,"Time (s)",'Interpreter', 'latex');
+YLIMS = [[0 400]; [0 40]; [0 800]];
+for k = 1:3
+    g = nexttile(k);
+    title(titles(k),'Interpreter', 'latex');
+    ylabel(Ylabels(k),'Interpreter', 'latex');
+    ylim(g,YLIMS(k,:));
+    xlim(g,[0 130]);
+    % legend(legendEntries); % too cluttered
+    hold off;
+end
+
+nexttile(1)
+legend(legendEntries);
+% saveas(fig,"./Figures/Onland Testing Results- Trainer Values.png")
 
 %% Peak Power
 
