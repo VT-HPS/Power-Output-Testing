@@ -152,3 +152,35 @@ flowchart TD
     I --> J(Power)
     H --> J
 ```
+
+## Figures
+
+<p align="center">
+	<img src="./Figures/Onland Testing Results- (Arduino) Derived Values.svg"/>
+</p>
+
+<p align="center">
+	<img src="./Figures/Onland Testing Results- Trainer Values.svg"/>
+</p>
+
+[Average Power:](./Figures/avgPowerTable.pdf)
+
+|     | Trial1   | Trial2   | Trial3   |
+|:----|:---------|:---------|:---------|
+| CG  | 159.7118 | 153.3534 | 174.1082 |
+| CJ  | 93.6738  | 64.7137  | 0        |
+| KB  | 174.0862 | 198.166  | 191.7826 |
+| MC  | 93.3015  | 83.7175  | 94.5097  |
+| MD  | 156.2198 | 110.1545 | 121.4405 |
+| NQ  | 103.6824 | 121.1665 | 111.4725 |
+
+[Peak Power:](./Figures/peakPowerTable.pdf)
+
+|     | Trial1    | Trial2   | Trial3   |
+|:----|:----------|:---------|:---------|
+| CG  | 229.7978  | 280.6831 | 279.8394 |
+| CJ  | 339.9596  | 202.9147 | 0        |
+| KB  | 553.5193  | 541.1092 | 233.8113 |
+| MC  | 402.8491  | 255.8057 | 430.8718 |
+| MD  | 1136.1656 | 118.3475 | 260.4775 |
+| NQ  | 248.0476  | 315.1827 | 564.8355 |
