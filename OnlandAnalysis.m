@@ -152,5 +152,26 @@ end
 peakPowerTable = array2table(peakPowerArray,"RowNames",fields,"VariableNames",["Trial1","Trial2","Trial3"]);
 avgPowerTable = array2table(avgPowerArray,"RowNames",fields,"VariableNames",["Trial1","Trial2","Trial3"]);
 
+%% Average Linear Params
+dataStruct = OnlandTesting;
+
+fields = fieldnames(dataStruct);
+MOIS =[];
+muT = [];
+
+for m = 1:numel(fields)
+    personInitials = fields{m};
+    for n = 1:numel(dataStruct.(personInitials))
+        % Access power data for the current trial
+        data = dataStruct.(personInitials)(n);
+
+        MOIS = [MOIS; data.MOI];
+        muT = [muT; data.TORQFRICT];
+    end
+end
+
+MMOI = mean(MOIS)
+mmuT = mean(muT)
+
 %% Restore Path
 path(oldpath)

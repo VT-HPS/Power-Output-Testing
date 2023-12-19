@@ -11,8 +11,8 @@ load ..\OnlandTestingData.mat
 
 data = OnlandTesting;
 % Change these numbers to choose a person and their data
-personNum = 1;
-trialNum = 1;
+personNum = 3;
+trialNum = 3;
 fields = fieldnames(data);
 dataName = sprintf('%s_%d', fields{personNum}, trialNum);
 
@@ -64,8 +64,8 @@ processedAlpha = sgolayfilt(alpha, 3, 11);
 % Model
 % -------------------------------------------------------------------------
 % Using a simple linear fit
-moi = 6.22237374355685;
-torqueFriction = 7.03166504279402;
+moi = data.(fields{personNum})(trialNum).MOI;
+torqueFriction = data.(fields{personNum})(trialNum).TORQFRICT;
 % torque = moi.*alpha + torqueFriction;
 torque = moi.*processedAlpha + torqueFriction;
 % Stage 3 Processing
